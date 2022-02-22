@@ -64,6 +64,7 @@ function menu(){
   return (
     
     <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white', padding: 10, height: '100%', overflow: 'auto' }}>
+      
       <Text>DelivCrous</Text>
       <View style={styles.container}>
         
