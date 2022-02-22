@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, Image, TextInput, ScrollView, Switch, } from 'react-native';
 
-
 let PLATS = [
   {
     imageUrl:
@@ -37,36 +36,13 @@ let PLATS = [
 
 
 export default function App() {
-  let bleu = true;
-  if(bleu == true){
+  let menus = true;
+  if(menus == true){
   return (menu())
   }else{
     return (panier())
   }
   
-}
-
-function panier(){
-
-  return(
-    <View style={{ alignItems: 'center' }}>
-          <Text style={styles.cardText}>plat selectionné(s) :</Text>
-          <View>
-            {selectedPlat.length > 0 ? (
-              selectedPlat.map(function (plat) {
-                return <Text style={styles.cardText}>{plat.name}</Text>;
-              })
-            ) : (
-              <Text style={[styles.cardText, { fontSize: 12, color: 'grey' }]}>
-                Aucun plat selectionné
-              </Text>
-            )}
-          </View>
-        </View>
-
-
-
-  );
 }
 
 
@@ -133,9 +109,6 @@ function menu(){
 }
 
 
-
-
-
 function Card(props) {
   return (
     <View style={styles.cardContainer}>
@@ -159,6 +132,34 @@ function Card(props) {
     </View>
   );
 }
+
+
+
+
+function panier(){
+
+  return(
+    <View style={{ alignItems: 'center' }}>
+          <Text style={styles.cardText}>plat selectionné(s) :</Text>
+          <View>
+            {selectedPlat.length > 0 ? (
+              selectedPlat.map(function (plat) {
+                return <Text style={styles.cardText}>{plat.name}</Text>;
+              })
+            ) : (
+              <Text style={[styles.cardText, { fontSize: 12, color: 'grey' }]}>
+                Aucun plat selectionné
+              </Text>
+            )}
+          </View>
+        </View>
+
+
+
+  );
+}
+
+
 
 
 
