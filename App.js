@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Image, TextInput, ScrollView, Switch, } from 'react-native';
+import { Text, View, StyleSheet, Image, TextInput, ScrollView, Switch,TouchableOpacity } from 'react-native';
 
 let PLATS = [
   {
@@ -36,7 +36,7 @@ let PLATS = [
 
 
 export default function App() {
-  let menus = false;
+  let menus = true;
   if(menus == true){
   return (menu())
   }else{
@@ -64,8 +64,16 @@ function menu(){
   return (
     
     <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white', padding: 10, height: '100%', overflow: 'auto' }}>
-      
+      <View style={styles.Border}>
       <Text>DelivCrous</Text>
+
+      <TouchableOpacity
+        onPress={() => panier()}
+        >
+        <Text >Pannier</Text>
+      </TouchableOpacity>
+
+      </View>
       <View style={styles.container}>
         
         <TextInput
@@ -80,6 +88,8 @@ function menu(){
         <View style={styles.cardsContainer}>
           {filteredPlat.map(function (plat) {
             return (
+              
+             
               <Card
                 imageUrl={plat.imageUrl}
                 name={plat.name}
@@ -97,6 +107,8 @@ function menu(){
                   setPlat(newAgents);
                 }}
               />
+              
+              
             );
           })}
         </View>
@@ -114,12 +126,14 @@ function menu(){
 function Card(props) {
   return (
     <View style={styles.cardContainer}>
+      <TouchableOpacity onPress={() => alert('Hello, world!')} style={styles.cardImage}>
       <Image
         style={styles.cardImage}
         source={{
           uri: props.imageUrl,
         }}
       />
+      </TouchableOpacity>
       <View style={styles.carddescritpion}>
         <Text style={[styles.cardText, { fontSize: 20, fontWeight: 'bold' }]}>
           {props.name}
@@ -131,7 +145,9 @@ function Card(props) {
         value={props.isSelected}
         onValueChange={props.onSelect}
       />
+      
     </View>
+    
   );
 }
 
@@ -181,6 +197,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     padding: 8,
+    margin:0,
+    width: '100%',
+    
   },
   searchInput: {
     color: 'black',
@@ -221,5 +240,14 @@ const styles = StyleSheet.create({
     marginTop: 4,
     fontSize: 16,
     color: 'black',
+  },
+  Border:{
+flex:0.05  ,
+justifyContent:'space-between',
+flexWrap: 'nowrap',
+flexDirection: 'row',
+margin:0,
+backgroundColor: 'red',
+width: '100%',
   },
 });
