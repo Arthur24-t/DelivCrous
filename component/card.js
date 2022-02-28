@@ -12,11 +12,11 @@ function Card(props) {
             uri: props.imageUrl,
           }}
         />
-        <View style={styles.carddescritpion}>
+        <View style={styles.carddescription}>
           <Text style={[styles.cardText, { fontSize: 20, fontWeight: 'bold' }]}>
             {props.name}
           </Text>
-          <Text style={styles.cardText}>{props.descritpion}</Text>
+          <Text style={styles.cardText}>{props.description}</Text>
         </View>
         <Switch
           style={{ alignSelf: 'center' }}

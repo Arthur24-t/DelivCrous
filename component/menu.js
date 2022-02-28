@@ -36,7 +36,7 @@ function menu(){
               <Card
                 imageUrl={plat.imageUrl}
                 name={plat.name}
-                descritpion={plat.descritpion}
+                description={plat.description}
                 isSelected={plat.isSelected}
                 onSelect={function () {
                   let newAgents = [...PLATS];
