@@ -1,325 +1,311 @@
-  import React, { useState } from 'react';
-  import { Text, View, StyleSheet, Image, TextInput, ScrollView, Switch, TouchableOpacity } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, ScrollView, Image, Switch, TouchableOpacity } from 'react-native';
+import menu from './composants/menu.json';
 
-  let PLATS = [
-    {
-      imageUrl:
-        'https://static.750g.com/images/1200-630/6b24c0e501965f26a1ffc6f88f90ef30/adobestock-243726230.jpeg',
-      name: 'Hamburger',
-      description: 'burger frites',
-      alergene: 'pain',
-      isSelected: false,
-    },
-    {
-      imageUrl:
-        'https://cac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fcac.2F2018.2F09.2F25.2F13d543a6-cdf7-400e-9c5a-b274a8f22e5e.2Ejpeg/748x372/quality/80/crop-from/center/pizza-margherita.jpeg',
-      name: 'Pizza margarita',
-      description: 'bien cuite par notre chef',
-      alergene: 'tomate',
-      isSelected: false,
-    },
-    {
-      imageUrl:
-        'https://img.cuisineaz.com/610x610/2016/07/29/i84653-spaghettis-bolognaise-rapides.jpg',
-      name: 'Spaghetti bolognese',
-      description: 'la classico',
-      alergene: 'sauce',
-      isSelected: false,
-    },
-    {
-      imageUrl:
-        'https://assets.afcdn.com/recipe/20211214/125831_w1024h768c1cx866cy866.jpg',
-      name: 'Pâtes carbonara  ',
-      description: 'genial !',
-      alergene: 'sauce',
-      isSelected: false,
-    },
-  ];
+export default function App() {
+  let [dishes, setDishes] = useState(menu);
+  let [screen, setScreen] = useState('main'); //'main', 'cart' or 'dish'
+  let [currentDish, setCurrentDish] = useState();
 
 
+  let selectedDishes = menu.filter(function (e) {
+    return e.isSelected;
+  });
 
-
-  export default function App() {
-
-    let [search, setSearch] = useState(``);
-    let [plat, setPlat] = useState(PLATS);
-    let [currentScreen, setCurrentScreen] = useState('menu');
-    let [currentDish, setCurrentDish] = useState();
-
-    let selectedPlat = PLATS.filter(function (plat) {
-      return plat.isSelected;
-    });
-
-    let filteredPlat = PLATS.filter(function (plat) {
-      return plat.name
-        .toLocaleLowerCase()
-        .includes(search.toLocaleLowerCase());
-    });
-
-
-    if (currentScreen == 'cart') {
-      return (<ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white', padding: 10, height: '100%', width: '100%', overflow: 'auto' }}>
-        <TouchableOpacity
-          onPress={function () {
-            setCurrentScreen('menu');
-          }}>
-          <Text>  ← Menu </Text>
-        </TouchableOpacity>
-        <View style={{ alignItems: 'center' }}>
-          <Text style={styles.cardText}>plat selectionné(s) :</Text>
-          <View>
-            {selectedPlat.length > 0 ? (
-              selectedPlat.map(function (plat) {
-                return <Card
-                  onOpen={function () {
-                    setCurrentDish(plat);
-                    setCurrentScreen('dish_details');
-                  }}
-                  imageUrl={plat.imageUrl}
-                  name={plat.name}
-                  isSelected={plat.isSelected}
-                  onSelect={function () {
-                    let newAgents = [...PLATS];
-                    newAgents = newAgents.map(function (p) {
-                      if (plat.name == p.name) {
-                        p.isSelected = !p.isSelected;
-                        return p;
-                      }
-                      return p;
-                    });
-                    setPlat(newAgents);
-                  }}
-                />;
-              })
-            ) : (
-              <Text style={[styles.cardText, { fontSize: 12, color: 'grey' }]}>
-                Aucun plat selectionné
-              </Text>
-            )}
-          </View>
-        </View>
-      </ScrollView>
-      );
-    } else if (currentScreen == 'dish_details') {
-      return (
-        <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white', overflow: 'auto' }}>
-          <TouchableOpacity
-            onPress={function () {
-              setCurrentScreen('menu');
-            }}>
-            <Text>←Menu</Text>
-          </TouchableOpacity>
-          <Card
-          imageUrl={currentDish.imageUrl}
-          name={currentDish.name}
-          description={currentDish.description}
-          isSelected={currentDish.isSelected}
-          onSelect={function () {
-            let newPlat = plat.map(function (c) {
-              // Si c'est le champion concérné par le switch
-              if (currentDish.name == c.name) {
-                c.isSelected = !c.isSelected; // J'inverse son statut
-                return c;
-              }
-              // Je retourne le champion tel qu'il est
-              return c;
-            });
-
-            setPlat(newPlat);
-          }}
-        />
-            <switch
-              value={currentDish.isSelected}
-              onValueChange={function () {
-                let newplat = plat.map(function (c) {
-                  if (currentDish.name == c.name) {
-                    c.isSelected = !c.isSelected;
-                    return c;
-                  }
-                  return c;
-                });
-
-                setPlat(newplat);
-              }}
-            />
-          
-        </ScrollView>
-      );
-    }
-
-
-    return (
-
-      <ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white', padding: 10, height: '100%', overflow: 'auto' }}>
-        <View style={styles.Border}>
-          <Text>DelivCrous</Text>
-
-          <TouchableOpacity
-            onPress={function () {
-              setCurrentScreen('cart')
+  if (screen == 'cart') {
+    return (<ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white', padding: 10, height: '100%', width: '100%', overflow: 'auto' }}>
+      <TouchableOpacity
+        onPress={function () {
+          setScreen('main');
+        }}>
+        <Text>  ← Menu </Text>
+      </TouchableOpacity>
+      <View style={styles.menu}>
+        <Text style={styles.Selection}>Votre sélection</Text>
+        {selectedDishes.length > 0 ? (selectedDishes.map(function (elmnt) {
+          return (<View><Menu
+            onOpen={function () {
+              setCurrentDish(elmnt);
+              setScreen('dish_details');
             }}
-          ><Text>{selectedPlat.length}</Text>
-            <Image source={{ uri: 'https://img2.freepng.fr/20180515/zfw/kisspng-shopping-cart-logo-shopping-bags-trolleys-5afb65b09c72d4.3564791415264250086408.jpg', }} style={{ height: 30, width: 30, }} />
-          </TouchableOpacity>
-
-        </View>
-        <View style={styles.container}>
-
-          <TextInput
-            placeholder="Rechercher un plat..."
-            style={styles.searchInput}
-            value={search}
-            onChangeText={function (text) {
-              setSearch(text);
+            isSelected={elmnt.isSelected}
+            platNom={elmnt.platNom}
+            platPrix={elmnt.platPrix}
+            platImage={elmnt.platImage}
+            onSelect={function () {
+              let newSelection = menu.map(function (e) {
+                if (elmnt.platNom == e.platNom) {
+                  e.isSelected = !e.isSelected;
+                  return e;
+                }
+                return e;
+              });
+              setDishes(newSelection);
             }}
-          />
-
-          <View style={styles.cardsContainer}>
-            {filteredPlat.map(function (plat) {
-              return (
+          /> <TouchableOpacity style={styles.commande} onPress={function () {
+            setScreen('commande');
+          }}>Commander</TouchableOpacity> </View>);
 
 
-                <Card
-                  onOpen={function () {
-                    setCurrentDish(plat);
-                    setCurrentScreen('dish_details');
-                  }}
-                  imageUrl={plat.imageUrl}
-                  name={plat.name}
-                  description={plat.description}
-                  alergene={plat.alergene}
-                  isSelected={plat.isSelected}
-                  onSelect={function () {
-                    let newAgents = [...PLATS];
-                    newAgents = newAgents.map(function (p) {
-                      if (plat.name == p.name) {
-                        p.isSelected = !p.isSelected;
-                        return p;
-                      }
-                      return p;
-                    });
-                    setPlat(newAgents);
-                  }}
-                />
-
-
-              );
-            })}
-          </View>
-        </View>
-      </ScrollView>
-
-
-
-    );
-
-  }
-
-
-
-  function Card(props) {
-    return (
-      <View style={styles.cardContainer}>
-        <TouchableOpacity onPress={props.onOpen} style={styles.cardImage}>
-
-          <Image
-            style={styles.cardImage}
-            source={{
-              uri: props.imageUrl,
-            }}
-          />
-        </TouchableOpacity>
-        <View style={styles.carddescription}>
-          <Text style={[styles.cardText, { fontSize: 20, fontWeight: 'bold' }]}>
-            {props.name}
-          </Text>
-          <Text style={styles.cardText}>{props.description}</Text>
-          <Text >{props.alergene}</Text>
-        </View>
-        <Switch
-          style={{ alignSelf: 'center' }}
-          value={props.isSelected}
-          onValueChange={props.onSelect}
-        />
-
+        })
+        ) : (
+          <Text style={styles.selectionPlats}>Aucun plat sélectionné...</Text>
+        )}
       </View>
 
+
+    </ScrollView>
     );
   }
 
 
+  if (screen == 'commande') {
+    return (
+      <View styles={styles.menu}>
+        <Text>Merci pour votre commande ! </Text>
+        <Image
+          style={styles.commandeImage}
+          source={{ uri: "https://www.objetsdhier.com//photos/actualites/zooms/tampon-merci-de-votre-confiance-bloomini-studio_54_fr.jpg" }}>
+        </Image>
+        <Text>La commande arrivera dans les plus bref delais !</Text>
+      </View>
+
+
+    );
+
+
+  }
+
+  if (screen == 'dish_details') {
+    return (
+      <ScrollView style={styles.menu}>
+        <TouchableOpacity
+          onPress={function () {
+            setScreen('main');
+          }}>
+          <Text>←Menu</Text>
+        </TouchableOpacity>
+        <Menu
+
+          isSelected={currentDish.isSelected}
+          platNom={currentDish.platNom}
+          platPrix={currentDish.platPrix}
+          platImage={currentDish.platImage}
+          platDesc={currentDish.platDesc}
+          platalergene={currentDish.platalergene}
+          onSelect={function () {
+            let newSelection = menu.map(function (e) {
+              if (currentDish.platNom == e.platNom) {
+                e.isSelected = !e.isSelected;
+                return e;
+              }
+              return e;
+            });
+            setDishes(newSelection);
+          }}
+        />
+      </ScrollView>
+    );
 
 
 
 
+  }
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.navBarMain}>
+        <TouchableOpacity style={styles.cartImage}
+          onPress={function () {
+            setScreen('cart');
+          }}
+        >
+          <Cart />
+        </TouchableOpacity>
+        <View>
+          <StatusBar style="auto" />
+        </View>
+      </View>
+      <View style={styles.menu}>
+        <Text style={styles.Selection}>Notre Carte</Text>
+
+        {menu.map(function (elmnt, index) {
+          return (
+            <Menu
+              onOpen={function () {
+                setCurrentDish(elmnt);
+                setScreen('dish_details');
+              }}
+              isLast={index == menu.length - 1}
+              isSelected={elmnt.isSelected}
+              platNom={elmnt.platNom}
+              platPrix={elmnt.platPrix}
+              platImage={elmnt.platImage}
+              platDesc={elmnt.platDesc}
+              onSelect={function () {
+                let newSelection = menu.map(function (e) {
+                  if (elmnt.platNom == e.platNom) {
+                    e.isSelected = !e.isSelected;
+                    return e;
+                  }
+                  return e;
+                });
+                setDishes(newSelection);
+              }}
+            />
+          )
+        })}
+
+      </View>
+    </ScrollView>
+  );
+}
+
+function Menu(props) {
+  return (
+    <View style={[styles.menuContainer, props.isLast ? { borderWidth: 0 } : {}]}>
+      <TouchableOpacity onPress={props.onOpen}>
+
+        <Image style={styles.menuImage} source={{ uri: props.platImage }}></Image>
+      </TouchableOpacity>
+      <View style={styles.menuInfo}>
+        <Switch
+          style={{ alignContent: 'flex-end' }}
+          value={props.selected}
+          onValueChange={props.onSelect}
+        />
+        <Text style={styles.menuNom}>{props.platNom}</Text>
+        <Text style={styles.menuPrix}>{props.platPrix + "€"}</Text>
+        <Text style={styles.menuDesc}>{props.platDesc}</Text>
+        <Text style={styles.menuAlergene}> {props.platalergene}</Text>
+      </View>
+    </View>
+  );
+}
+
+function Cart(props) {
+  return (
+    <View style={styles.cartCard}>
+      <Image
+        style={styles.cartImage}
+        source={{ uri: "https://thumbs.dreamstime.com/b/shopping-cart-icon-vector-logo-137282150.jpg" }}>
+      </Image>
+      <Text style={styles.text}>DeliveCROUS</Text>
+    </View>
+  )
+}
 
 
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-      padding: 8,
-      margin: 0,
-      width: '100%',
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#dff1f1'
+  },
+  title: {
+    backgroundColor: '#9cb1b5',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'baseline',
+    padding: 40,
+    borderRadius: 2,
+    borderWidth: 5,
+    borderBottomWidth: 0,
+    borderColor: "#55adad"
+  },
+  text: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontFamily: 'Baskerville',
+    fontSize: 30,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+    color: '#665555',
+    paddingLeft: 50
+  },
+  menu: {
+    borderWidth: 5,
+    borderTopWidth: 3,
+    borderColor: '#55adad'
+  },
+  menuContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'baseline',
+    marginBottom: 5,
+    borderBottomWidth: 2,
+    borderColor: "#55adad"
+  },
+  menuImage: {
+    resizeMode: 'contain',
+    height: 200,
+    width: 200
+  },
+  menuInfo: {
 
-    },
-    searchInput: {
-      color: 'black',
-      padding: 8,
-      borderRadius: 4,
-      borderColor: 'grey',
-      borderWidth: 1,
-    },
-    cardsContainer: {
-      flex: 1,
-      flexWrap: 'wrap',
-      flexDirection: 'row',
-      backgroundColor: 'white',
-      padding: 8,
-    },
-    cardContainer: {
-      margin: 8,
-      width: '100px',
-      height: '200px',
-      borderRadius: 8,
-      borderColor: '#31334a',
-      borderWidth: 0.1,
-      marginVertical: 2,
-    },
-    cardImage: {
-      flex: 1,
-      width: '100%',
-      borderTopLeftRadius: 8,
-      borderTopRightRadius: 8,
-    },
-    carddescription: {
-      flex: 1,
-      padding: 4,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    cardText: {
-      marginTop: 4,
-      fontSize: 16,
-      color: 'black',
-    },
-    Border: {
-      flex: 0.05,
-      justifyContent: 'space-between',
-      flexWrap: 'nowrap',
-      flexDirection: 'row',
-      margin: 0,
-      backgroundColor: 'red',
-      width: '100%',
-    },
-    ImagePanier: {
-      flex: 1,
-      width: '100%',
-      borderTopLeftRadius: 8,
-      borderTopRightRadius: 8
-    },
-    dishdetail:{
-  width: '100%'
-    }
-  });
+  },
+  selectionPlats: {
+    paddingLeft: 5,
+    fontSize: 15,
+    color: 'black',
+    borderRadius: 3,
+    borderWidth: 2,
+    borderColor: '#55adad'
+  },
+  Selection: {
+    margin: 3,
+    paddingLeft: '33%',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#665555',
+    borderRadius: 3,
+    borderWidth: 2,
+    borderColor: '#55adad'
+  },
+  navBarMain: {
+    backgroundColor: '#9cb1b5',
+    padding: '5%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'baseline'
+  },
+  navTextMain: {
+    fontSize: 30,
+    fontFamily: 'Baskerville',
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    color: '#665555',
+  },
+  navBarCart: {
+    padding: '5%',
+    backgroundColor: '#9cb1b5',
+    alignItems: 'baseline'
+  },
+  navTextCart: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    color: '#665555',
+    paddingLeft: '1%'
+  },
+  cartImage: {
+    resizeMode: 'contain',
+    width: 30,
+    height: 30
+  },
+  cartCard: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'baseline'
+  },
+  commande: {
+    backgroundColor: '#55adad',
+    alignItems: 'center'
+  },
+  commandeImage: {
+    justifyContent: 'center',
+    width: 100,
+    height: 100,
+  }
+});
