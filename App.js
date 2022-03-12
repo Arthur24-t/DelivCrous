@@ -126,7 +126,7 @@ export default function App() {
             setScreen('cart');
           }}
         >
-          <Cart />
+         <Cart />
         </TouchableOpacity>
         <View>
           <StatusBar style="auto" />
@@ -189,7 +189,7 @@ function Menu(props) {
   );
 }
 
-function Cart(props) {
+function Cart() {
   return (
     <View style={styles.cartCard}>
       <Image
@@ -223,6 +223,7 @@ const styles = StyleSheet.create({
   text: {
     justifyContent: 'center',
     alignItems: 'center',
+    fontFamily: 'Baskerville',
     fontSize: 30,
     fontStyle: 'italic',
     fontWeight: 'bold',
@@ -248,7 +249,7 @@ const styles = StyleSheet.create({
     width: 200
   },
   selectionPlats: {
-    paddingLeft: 5,
+    paddingLeft: 5, 
     fontSize: 15,
     color: 'black',
     borderRadius: 3,
@@ -297,7 +298,6 @@ const styles = StyleSheet.create({
     height: 30
   },
   cartCard: {
-    marginLeft:30,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'baseline'
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   commande: {
     backgroundColor: '#55adad',
     alignItems: 'center'
-  },
+  }, 
   commandeImage: {
     alignSelf: 'center',
     width: 400,
