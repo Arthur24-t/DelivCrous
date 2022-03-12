@@ -43,15 +43,21 @@ export default function App() {
               });
               setDishes(newSelection);
             }}
-          /> <TouchableOpacity style={styles.commande} onPress={function () {
-            setScreen('commande');
-          }}>Commander</TouchableOpacity> </View>);
+          />  </View>);
 
 
         })
         ) : (
           <Text style={styles.selectionPlats}>Aucun plat sélectionné...</Text>
         )}
+        
+        {selectedDishes.length > 0 &&
+          <View><TouchableOpacity style={styles.commande} onPress={function () {
+            setScreen('commande');
+          }}>Commander</TouchableOpacity> </View>
+        }
+
+      
       </View>
 
 
@@ -62,13 +68,13 @@ export default function App() {
 
   if (screen == 'commande') {
     return (
-      <View styles={styles.menu}>
-        <Text>Merci pour votre commande ! </Text>
+      <View style={styles.menu}>
+        <Text style={styles.Selection}>Merci pour votre commande ! </Text>
         <Image
           style={styles.commandeImage}
           source={{ uri: "https://www.objetsdhier.com//photos/actualites/zooms/tampon-merci-de-votre-confiance-bloomini-studio_54_fr.jpg" }}>
         </Image>
-        <Text>La commande arrivera dans les plus bref delais !</Text>
+        <Text style={styles.selectionPlats}>La commande arrivera dans les plus bref delais !</Text>
       </View>
 
 
@@ -171,8 +177,8 @@ function Menu(props) {
       <View style={styles.menuInfo}>
         <Switch
           style={{ alignContent: 'flex-end' }}
-          value={props.selected}
-          onValueChange={props.onSelect}
+          value={props.isSelected}
+        onValueChange={props.onSelect}
         />
         <Text style={styles.menuNom}>{props.platNom}</Text>
         <Text style={styles.menuPrix}>{props.platPrix + "€"}</Text>
@@ -217,7 +223,6 @@ const styles = StyleSheet.create({
   text: {
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: 'Baskerville',
     fontSize: 30,
     fontStyle: 'italic',
     fontWeight: 'bold',
@@ -241,9 +246,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     height: 200,
     width: 200
-  },
-  menuInfo: {
-
   },
   selectionPlats: {
     paddingLeft: 5,
@@ -295,6 +297,7 @@ const styles = StyleSheet.create({
     height: 30
   },
   cartCard: {
+    marginLeft:30,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'baseline'
@@ -304,8 +307,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   commandeImage: {
-    justifyContent: 'center',
-    width: 100,
-    height: 100,
+    alignSelf: 'center',
+    width: 400,
+    height: 400,
+  },
+  commandemenu:{
+justifyContent:'center',
+
   }
 });
