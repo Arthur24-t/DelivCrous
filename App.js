@@ -5,7 +5,7 @@ import menu from './composants/menu.json';
 
 export default function App() {
   let [dishes, setDishes] = useState(menu);
-  let [screen, setScreen] = useState('main'); //'main', 'cart' or 'dish'
+  let [screen, setScreen] = useState('main');
   let [currentDish, setCurrentDish] = useState();
 
 
@@ -14,7 +14,7 @@ export default function App() {
   });
 
   if (screen == 'cart') {
-    return (<ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white', padding: 10, height: '100%', width: '100%', overflow: 'auto' }}>
+    return (<ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white', padding: 10, height: '100%', width: '100%', marginTop:40}}>
       <TouchableOpacity
         onPress={function () {
           setScreen('main');
@@ -24,7 +24,7 @@ export default function App() {
       <View style={styles.menu}>
         <Text style={styles.Selection}>Votre sélection</Text>
         {selectedDishes.length > 0 ? (selectedDishes.map(function (elmnt) {
-          return (<View><Menu
+          return (<View><Menus
             onOpen={function () {
               setCurrentDish(elmnt);
               setScreen('dish_details');
@@ -51,16 +51,12 @@ export default function App() {
           <Text style={styles.selectionPlats}>Aucun plat sélectionné...</Text>
         )}
         
-        {selectedDishes.length > 0 &&
+        {selectedDishes.length > 0 ?
           <View><TouchableOpacity style={styles.commande} onPress={function () {
             setScreen('commande');
-          }}>Commander</TouchableOpacity> </View>
-        }
-
-      
+          }}><Text>Commander</Text></TouchableOpacity> </View>:null
+        } 
       </View>
-
-
     </ScrollView>
     );
   }
@@ -92,7 +88,7 @@ export default function App() {
           }}>
           <Text>←Menu</Text>
         </TouchableOpacity>
-        <Menu
+        <Menus
 
           isSelected={currentDish.isSelected}
           platNom={currentDish.platNom}
@@ -121,23 +117,25 @@ export default function App() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.navBarMain}>
-        <TouchableOpacity style={styles.cartImage}
+      <View style={styles.cartCard}>
+      <TouchableOpacity
           onPress={function () {
             setScreen('cart');
-          }}
-        >
-         <Cart />
-        </TouchableOpacity>
-        <View>
-          <StatusBar style="auto" />
-        </View>
+          }}>        
+      <Image
+        style={styles.cartImage}
+        source={{ uri: "https://thumbs.dreamstime.com/b/shopping-cart-icon-vector-logo-137282150.jpg" }}>
+      </Image>
+      </TouchableOpacity>
+      <Text style={styles.text}>DeliveCROUS</Text>
+    </View>
       </View>
       <View style={styles.menu}>
         <Text style={styles.Selection}>Notre Carte</Text>
 
         {menu.map(function (elmnt, index) {
           return (
-            <Menu
+            <Menus
               onOpen={function () {
                 setCurrentDish(elmnt);
                 setScreen('dish_details');
@@ -167,7 +165,7 @@ export default function App() {
   );
 }
 
-function Menu(props) {
+function Menus(props) {
   return (
     <View style={[styles.menuContainer, props.isLast ? { borderWidth: 0 } : {}]}>
       <TouchableOpacity onPress={props.onOpen}>
@@ -223,7 +221,6 @@ const styles = StyleSheet.create({
   text: {
     justifyContent: 'center',
     alignItems: 'center',
-    fontFamily: 'Baskerville',
     fontSize: 30,
     fontStyle: 'italic',
     fontWeight: 'bold',
@@ -231,6 +228,7 @@ const styles = StyleSheet.create({
     paddingLeft: 50
   },
   menu: {
+    marginTop: 40,
     borderWidth: 5,
     borderTopWidth: 3,
     borderColor: '#55adad'
@@ -275,7 +273,6 @@ const styles = StyleSheet.create({
   },
   navTextMain: {
     fontSize: 30,
-    fontFamily: 'Baskerville',
     fontWeight: 'bold',
     fontStyle: 'italic',
     color: '#665555',
