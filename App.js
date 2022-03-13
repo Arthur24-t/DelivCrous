@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, Image, Switch, TouchableOpacity } from 'react-native';
 import menu from './composants/menu.json';
@@ -24,7 +23,7 @@ export default function App() {
       <View style={styles.menu}>
         <Text style={styles.Selection}>Votre sélection</Text>
         {selectedDishes.length > 0 ? (selectedDishes.map(function (elmnt) {
-          return (<View><Menus
+          return (<Menus
             onOpen={function () {
               setCurrentDish(elmnt);
               setScreen('dish_details');
@@ -36,14 +35,14 @@ export default function App() {
             onSelect={function () {
               let newSelection = menu.map(function (e) {
                 if (elmnt.platNom == e.platNom) {
-                  e.isSelected = !e.isSelected;
-                  return e;
+                  e.isSelected = !e.isSelected
+                  return e
                 }
-                return e;
+                return e
               });
               setDishes(newSelection);
             }}
-          />  </View>);
+          /> )
 
 
         })
