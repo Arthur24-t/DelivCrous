@@ -20,7 +20,7 @@ export default function App() {
         }}>
         <Text>  ← Menu </Text>
       </TouchableOpacity>
-      <ScrollView style={styles.menu}>
+      <ScrollView style={styles.Stylemenu}>
         <Text style={styles.Selection}>Votre sélection</Text>
         {selectedDishes.length > 0 ? (selectedDishes.map(function (elmnt) {
           return (<Menus
@@ -63,7 +63,7 @@ export default function App() {
 
   if (screen == 'commande') {
     return (
-      <View style={styles.menu}>
+      <View style={styles.Stylemenu}>
         <Text style={styles.Selection}>Merci pour votre commande ! </Text>
         <Image
           style={styles.commandeImage}
@@ -80,7 +80,7 @@ export default function App() {
 
   if (screen == 'dish_details') {
     return (
-      <ScrollView style={styles.menu}>
+      <ScrollView style={styles.Stylemenu}>
         <TouchableOpacity
           onPress={function () {
             setScreen('main');
@@ -129,7 +129,7 @@ export default function App() {
       <Text style={styles.text}>DeliveCROUS</Text>
     </View>
       </View>
-      <View style={styles.menu}>
+      <View style={styles.Stylemenu}>
         <Text style={styles.Selection}>Notre Carte</Text>
 
         {menu.map(function (elmnt, index) {
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     color: '#665555',
     paddingLeft: 50
   },
-  menu: {
+  Stylemenu: {
     marginTop: 40,
     borderWidth: 5,
     borderTopWidth: 3,
