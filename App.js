@@ -20,7 +20,7 @@ export default function App() {
         }}>
         <Text>  ← Menu </Text>
       </TouchableOpacity>
-      <View style={styles.menu}>
+      <ScrollView style={styles.menu}>
         <Text style={styles.Selection}>Votre sélection</Text>
         {selectedDishes.length > 0 ? (selectedDishes.map(function (elmnt) {
           return (<Menus
@@ -51,11 +51,11 @@ export default function App() {
         )}
         
         {selectedDishes.length > 0 ?
-          <View><TouchableOpacity style={styles.commande} onPress={function () {
+          <TouchableOpacity style={styles.commande} onPress={function () {
             setScreen('commande');
-          }}><Text>Commander</Text></TouchableOpacity> </View>:null
+          }}><Text>Commander</Text></TouchableOpacity> :null
         } 
-      </View>
+      </ScrollView>
     </ScrollView>
     );
   }
