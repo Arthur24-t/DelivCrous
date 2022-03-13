@@ -79,6 +79,14 @@ export default function App() {
           source={{ uri: "https://www.objetsdhier.com//photos/actualites/zooms/tampon-merci-de-votre-confiance-bloomini-studio_54_fr.jpg" }}>
         </Image>
         <Text style={styles.comtext}>La commande arrivera dans les plus bref delais !</Text>
+        <TouchableOpacity  onPress={function () {
+            App.selectedDishes = menu.map(function (e) {
+              if (e.isSelected) {
+                e.isSelected = false;
+              }
+            })
+            setScreen('main');
+          }}><Text style={styles.commande}>Accueil</Text></TouchableOpacity>
       </View>
 
 
