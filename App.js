@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, ScrollView, Image, Switch, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Switch, TouchableOpacity,TextInput } from 'react-native';
 import menu from './composants/menu.json';
 
 export default function App() {
@@ -13,7 +13,7 @@ export default function App() {
   });
 
   if (screen == 'cart') {
-    return (<ScrollView contentContainerStyle={{ flex: 1, backgroundColor: 'white', padding: 10, height: '100%', width: '100%', marginTop:40}}>
+    return (<ScrollView contentContainerStyle={{ flex: 1, backgroundColor: '#dff1f1', width: '100%', marginTop:40}}>
       <TouchableOpacity
         onPress={function () {
           setScreen('main');
@@ -50,10 +50,19 @@ export default function App() {
           <Text style={styles.selectionPlats}>Aucun plat sélectionné...</Text>
         )}
         
-        {selectedDishes.length > 0 ?
-          <TouchableOpacity style={styles.commande} onPress={function () {
+        {selectedDishes.length > 0 ?<View><View><Text style={styles.ou}>Ou voulez vous etre livré ?</Text></View>
+        <TextInput
+        placeholder="Votre nom ?"
+      />
+        <TextInput
+        placeholder="Quel batiment ?"
+      />
+      <TextInput
+        placeholder="Quelle Salle ?"
+      />
+          <TouchableOpacity  onPress={function () {
             setScreen('commande');
-          }}><Text>Commander</Text></TouchableOpacity> :null
+          }}><Text style={styles.commande}>Commander</Text></TouchableOpacity></View> :null
         } 
       </ScrollView>
     </ScrollView>
@@ -64,12 +73,12 @@ export default function App() {
   if (screen == 'commande') {
     return (
       <View style={styles.Stylemenu}>
-        <Text style={styles.Selection}>Merci pour votre commande ! </Text>
+        <Text style={styles.comtext}>Merci pour votre commande ! </Text>
         <Image
           style={styles.commandeImage}
           source={{ uri: "https://www.objetsdhier.com//photos/actualites/zooms/tampon-merci-de-votre-confiance-bloomini-studio_54_fr.jpg" }}>
         </Image>
-        <Text style={styles.selectionPlats}>La commande arrivera dans les plus bref delais !</Text>
+        <Text style={styles.comtext}>La commande arrivera dans les plus bref delais !</Text>
       </View>
 
 
@@ -94,7 +103,6 @@ export default function App() {
           platPrix={currentDish.platPrix}
           platImage={currentDish.platImage}
           platDesc={currentDish.platDesc}
-          platalergene={currentDish.platalergene}
           onSelect={function () {
             let newSelection = menu.map(function (e) {
               if (currentDish.platNom == e.platNom) {
@@ -106,6 +114,8 @@ export default function App() {
             setDishes(newSelection);
           }}
         />
+        <Text style={styles.alergene}>Alergene :</Text>
+       <Text> {currentDish.platalergene} </Text>
       </ScrollView>
     );
 
@@ -121,17 +131,14 @@ export default function App() {
           onPress={function () {
             setScreen('cart');
           }}>        
-      <Image
-        style={styles.cartImage}
-        source={{ uri: "https://thumbs.dreamstime.com/b/shopping-cart-icon-vector-logo-137282150.jpg" }}>
-      </Image>
+      <Text style={styles.panier}>🛒 {selectedDishes.length}</Text>
       </TouchableOpacity>
       <Text style={styles.text}>DeliveCROUS</Text>
     </View>
       </View>
       <View style={styles.Stylemenu}>
         <Text style={styles.Selection}>Notre Carte</Text>
-
+      
         {menu.map(function (elmnt, index) {
           return (
             <Menus
@@ -186,17 +193,7 @@ function Menus(props) {
   );
 }
 
-function Cart() {
-  return (
-    <View style={styles.cartCard}>
-      <Image
-        style={styles.cartImage}
-        source={{ uri: "https://thumbs.dreamstime.com/b/shopping-cart-icon-vector-logo-137282150.jpg" }}>
-      </Image>
-      <Text style={styles.text}>DeliveCROUS</Text>
-    </View>
-  )
-}
+
 
 
 
@@ -229,8 +226,9 @@ const styles = StyleSheet.create({
   Stylemenu: {
     marginTop: 40,
     borderWidth: 5,
-    borderTopWidth: 3,
-    borderColor: '#55adad'
+    borderColor: '#55adad',
+    backgroundColor: '#dff1f1',
+    width:'100%',
   },
   menuContainer: {
     flexDirection: 'column',
@@ -288,11 +286,7 @@ const styles = StyleSheet.create({
     color: '#665555',
     paddingLeft: '1%'
   },
-  cartImage: {
-    resizeMode: 'contain',
-    width: 30,
-    height: 30
-  },
+
   cartCard: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -300,7 +294,10 @@ const styles = StyleSheet.create({
   },
   commande: {
     backgroundColor: '#55adad',
-    alignItems: 'center'
+    textAlign: 'center',
+    alignSelf: 'center',
+    fontSize:25,
+    width: '100%',
   }, 
   commandeImage: {
     alignSelf: 'center',
@@ -310,5 +307,17 @@ const styles = StyleSheet.create({
   commandemenu:{
 justifyContent:'center',
 
+  },
+  alergene:{
+fontSize:25,
+  },
+  ou:{
+    fontSize:20,
+  },
+  panier:{
+    fontSize :20,
+  },
+  comtext:{
+    fontSize:25,
   }
 });
